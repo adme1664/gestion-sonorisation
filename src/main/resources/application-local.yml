@@ -1,0 +1,26 @@
+schema.name: gestion_sonorisation
+endpoints:
+  cors:
+    allowed-origins: http://localhost:4000
+
+spring:
+  flyway:
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    schemas: ${schema.name}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibenate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: ${schema.name}
+        show-sql: true
+        generate-ddl: false
+        sql:
+          init:
+            mode: never
+  datasource:
+    username: test
+    password: test
+    url: jdbc:postgresql://${RDS_HOSTNAME:localhost}:${RDS_PORT:5432}/${RDS_DB_NAME:test_db}

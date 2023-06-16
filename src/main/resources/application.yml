@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: gestion-sonorisation
+server:
+  port: 9099
+  servlet:
+    context-path: /gestion-sonorisation
