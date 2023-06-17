@@ -45,7 +45,7 @@ public class AssignationMicrophone extends BaseEntity {
 
   @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "programme_id")
-  ProgrammeSonorisation programme;
+  Programme programme;
 
   @Column(name = "date_assignation", nullable = false)
   LocalDateTime dateAssignation;

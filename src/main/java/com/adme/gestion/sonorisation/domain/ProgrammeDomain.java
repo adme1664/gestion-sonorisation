@@ -7,12 +7,16 @@ import java.util.UUID;
 import lombok.Builder;
 
 @Builder
-public record ProgrammeSonorisationDomain(
+public record ProgrammeDomain(
     UUID programmeId,
     LocalDate dateCommencement,
+
+    String nomProgramme,
     LocalDate dateFin,
-    Set<AssignationConsoleDomain> assignationsConsoles,
+    Set<AssignationConsoleDomain> assignationConsoles,
     Set<AssignationVisioConferenceDomain> assignationVisioConferences,
+
+    Set<AssignationMicrophoneDomain> assignationMicrophones,
     LocalDateTime dateCreation,
 
     String userCreate,

@@ -7,7 +7,7 @@ import lombok.Builder;
 @Builder
 public record AssignationVisioConferenceDomain(UUID assignationId,
                                                ProclamateurDomain proclamateur,
-                                               ProgrammeSonorisationDomain programmeSonorisation,
+                                               ProgrammeDomain programmeSonorisation,
                                                LocalDateTime dateAssignation,
                                                LocalDateTime dateCreation,
 

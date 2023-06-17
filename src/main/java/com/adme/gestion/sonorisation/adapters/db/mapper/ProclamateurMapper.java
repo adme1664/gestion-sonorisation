@@ -5,6 +5,7 @@ import com.adme.gestion.sonorisation.domain.ProclamateurDomain;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper
 public interface ProclamateurMapper {
@@ -21,6 +22,8 @@ public interface ProclamateurMapper {
   @Mapping(target = "servirDansConsole", source = "servirDansConsole")
   @Mapping(target = "pionnierPermanent", source = "pionnierPermanent")
   @Mapping(target = "nePeutPlusServir", source = "nePeutPlusServir")
+  @Mapping(target = "dateBapteme", source = "dateBapteme")
+  @Mapping(target = "dateNaissance", source = "dateNaissance")
   @Mapping(target = "assigne", source = "assigne")
   @Mapping(target = "ancien", source = "ancien")
   @Mapping(target = "assignationConsoles", source = "assignationConsoles")
@@ -29,4 +32,6 @@ public interface ProclamateurMapper {
   ProclamateurDomain entityToDomain(Proclamateur proclamateur);
 
   List<ProclamateurDomain> mapToList(List<Proclamateur> proclamateurs);
+
+  void updateProclamateur(ProclamateurDomain update, @MappingTarget Proclamateur saved);
 }

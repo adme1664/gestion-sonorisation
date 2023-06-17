@@ -16,6 +16,7 @@ public record ProclamateurDomain (
     String addresse,
     String telephone,
     String email,
+    LocalDate dateBapteme,
     boolean ancien,
     boolean serviteurMinisteriel,
     boolean pionnierPermanent,

@@ -9,7 +9,7 @@ import lombok.Builder;
 public record AssignationMicrophoneDomain(
     UUID assignationId,
     ProclamateurDomain proclamateur,
-    ProgrammeSonorisationDomain programmeSonorisation,
+    ProgrammeDomain programmeSonorisation,
     LocalDate dateAssignation,
     LocalDateTime dateCreation,
 

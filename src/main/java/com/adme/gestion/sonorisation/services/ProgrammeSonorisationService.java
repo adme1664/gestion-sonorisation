@@ -1,11 +1,11 @@
 package com.adme.gestion.sonorisation.services;
 
 import com.adme.gestion.sonorisation.adapters.db.entities.AssignationMicrophone;
-import com.adme.gestion.sonorisation.adapters.db.entities.ProgrammeSonorisation;
+import com.adme.gestion.sonorisation.adapters.db.entities.Programme;
 import com.adme.gestion.sonorisation.adapters.db.entities.AssignationConsole;
 import com.adme.gestion.sonorisation.adapters.db.entities.AssignationVisioConference;
 import com.adme.gestion.sonorisation.exceptions.NotFoundException;
-import com.adme.gestion.sonorisation.adapters.db.repository.ProgrammeSonorisationRepository;
+import com.adme.gestion.sonorisation.adapters.db.repository.ProgrammeRepository;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -19,63 +19,63 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ProgrammeSonorisationService {
 
-  ProgrammeSonorisationRepository programmeSonorisationRepository;
+  ProgrammeRepository programmeRepository;
 
   public ProgrammeSonorisationService(
-      ProgrammeSonorisationRepository programmeSonorisationRepository) {
-    this.programmeSonorisationRepository = programmeSonorisationRepository;
+      ProgrammeRepository programmeRepository) {
+    this.programmeRepository = programmeRepository;
   }
 
-  public void setAssignationConsole(ProgrammeSonorisation programme,
+  public void setAssignationConsole(Programme programme,
       Set<AssignationConsole> assignationConsoles) {
     if (programme.getAssignationConsoles().isEmpty()) {
       programme.setAssignationConsoles(assignationConsoles);
     }
   }
 
-  public void setAssignationVisioConference(ProgrammeSonorisation programme,
+  public void setAssignationVisioConference(Programme programme,
       Set<AssignationVisioConference> assignationVisioConferences) {
     if (programme.getAssignationVisioConferences().isEmpty()) {
       programme.setAssignationVisioConferences(assignationVisioConferences);
     }
   }
 
-  public void setAssignationMicrophones(ProgrammeSonorisation programme,
+  public void setAssignationMicrophones(Programme programme,
       Set<AssignationMicrophone> assignationMicrophones) {
     if (programme.getAssignationVisioConferences().isEmpty()) {
       programme.setAssignationMicrophones(assignationMicrophones);
     }
   }
 
-  public ProgrammeSonorisation save(ProgrammeSonorisation programmeSonorisation) {
-    if (Objects.nonNull(programmeSonorisation.getProgrammeId())) {
+  public Programme save(Programme programme) {
+    if (Objects.nonNull(programme.getProgrammeId())) {
 
       log.info("Mise a jour du programme id {} pour la date du {} au {}",
-          programmeSonorisation.getProgrammeId(),
-          programmeSonorisation.getDateCommencement(),
-          programmeSonorisation.getDateFin());
+          programme.getProgrammeId(),
+          programme.getDateCommencement(),
+          programme.getDateFin());
 
-      return prepareForUpdate(programmeSonorisation);
+      return prepareForUpdate(programme);
 
     } else {
 
       log.info("Enregistrement d'un nouveau programme pour la date du {} au {}",
-          programmeSonorisation.getDateCommencement(),
-          programmeSonorisation.getDateFin());
+          programme.getDateCommencement(),
+          programme.getDateFin());
 
-      return this.programmeSonorisationRepository.save(programmeSonorisation);
+      return this.programmeRepository.save(programme);
     }
 
   }
 
-  public ProgrammeSonorisation prepareForUpdate(ProgrammeSonorisation programme) {
-    ProgrammeSonorisation programmeDb = getProgrammeSonorisation(programme.getProgrammeId());
+  public Programme prepareForUpdate(Programme programme) {
+    Programme programmeDb = getProgrammeSonorisation(programme.getProgrammeId());
     validateProgramme(programme, programmeDb);
-    return programmeSonorisationRepository.save(programmeDb);
+    return programmeRepository.save(programmeDb);
   }
 
-  public void validateProgramme(ProgrammeSonorisation programme,
-      ProgrammeSonorisation programmeDb) {
+  public void validateProgramme(Programme programme,
+      Programme programmeDb) {
     log.info("Validation d'un programme existant...");
     programmeDb.setNomProgramme(programme.getNomProgramme());
     programmeDb.setDateCommencement(programme.getDateCommencement());
@@ -85,8 +85,8 @@ public class ProgrammeSonorisationService {
     programmeDb.setAssignationVisioConferences(programme.getAssignationVisioConferences());
   }
 
-  public ProgrammeSonorisation getProgrammeSonorisation(UUID programmeId) {
-    return this.programmeSonorisationRepository
+  public Programme getProgrammeSonorisation(UUID programmeId) {
+    return this.programmeRepository
         .findById(programmeId).orElseThrow(NotFoundException::new);
   }
 

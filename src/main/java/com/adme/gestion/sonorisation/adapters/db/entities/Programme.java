@@ -28,7 +28,7 @@ import org.hibernate.annotations.GenericGenerator;
 @SuperBuilder
 @Getter
 @Setter
-public class ProgrammeSonorisation extends BaseEntity {
+public class Programme extends BaseEntity {
 
   @Id
   @GeneratedValue(generator = "UUID")

@@ -1,9 +1,7 @@
 package com.adme.gestion.sonorisation.adapters.db.services;
 
 import com.adme.gestion.sonorisation.adapters.db.entities.Proclamateur;
-import com.adme.gestion.sonorisation.adapters.db.mapper.ProclamateurMapper;
 import com.adme.gestion.sonorisation.adapters.db.repository.ProclamateurRepository;
-import com.adme.gestion.sonorisation.domain.ProclamateurDomain;
 import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -18,31 +16,26 @@ public class ProclamateurServiceImpl implements ProclamateurService {
 
   ProclamateurRepository proclamateurRepository;
 
-  ProclamateurMapper proclamateurMapper;
 
-  public ProclamateurServiceImpl(ProclamateurRepository proclamateurRepository,
-      ProclamateurMapper proclamateurMapper) {
+  public ProclamateurServiceImpl(ProclamateurRepository proclamateurRepository) {
     this.proclamateurRepository = proclamateurRepository;
-    this.proclamateurMapper = proclamateurMapper;
   }
 
 
   @Override
-  public ProclamateurDomain saveOrUpdate(ProclamateurDomain proclamateurDomain) {
-    Proclamateur proclamateur = this.proclamateurMapper.domainToEntity(proclamateurDomain);
+  public Proclamateur saveOrUpdate(Proclamateur proclamateur) {
     log.info("Save new proclamateur in db");
-    return this.proclamateurMapper.entityToDomain(this.proclamateurRepository.save(proclamateur));
+    return this.proclamateurRepository.save(proclamateur);
   }
 
   @Override
-  public ProclamateurDomain getById(UUID proclamateurId) {
+  public Proclamateur getById(UUID proclamateurId) {
     log.info("Retrieve info for proclamateur {}", proclamateurId.toString());
-    return this.proclamateurMapper.entityToDomain(
-        this.proclamateurRepository.findById(proclamateurId).orElse(null));
+    return  this.proclamateurRepository.findById(proclamateurId).orElse(null);
   }
 
   @Override
-  public List<ProclamateurDomain> getAll() {
-    return this.proclamateurMapper.mapToList(this.proclamateurRepository.findAll());
+  public List<Proclamateur> getAll() {
+    return this.proclamateurRepository.findAll();
   }
 }

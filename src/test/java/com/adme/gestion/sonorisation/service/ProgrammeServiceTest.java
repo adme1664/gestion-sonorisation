@@ -5,12 +5,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.adme.gestion.sonorisation.adapters.db.entities.AssignationMicrophone;
-import com.adme.gestion.sonorisation.adapters.db.entities.ProgrammeSonorisation;
+import com.adme.gestion.sonorisation.adapters.db.entities.Programme;
 import com.adme.gestion.sonorisation.services.ProgrammeSonorisationService;
 import com.adme.gestion.sonorisation.adapters.db.entities.AssignationConsole;
 import com.adme.gestion.sonorisation.adapters.db.entities.AssignationVisioConference;
 import com.adme.gestion.sonorisation.adapters.db.entities.Proclamateur;
-import com.adme.gestion.sonorisation.adapters.db.repository.ProgrammeSonorisationRepository;
+import com.adme.gestion.sonorisation.adapters.db.repository.ProgrammeRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -27,16 +27,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ProgrammeSonorisationServiceTest {
+class ProgrammeServiceTest {
 
   @Mock
-  ProgrammeSonorisationRepository programmeSonorisationRepository;
+  ProgrammeRepository programmeRepository;
 
   @InjectMocks
   ProgrammeSonorisationService programmeSonorisationService;
 
   @Captor
-  ArgumentCaptor<ProgrammeSonorisation> programmeSonorisationArgumentCaptor;
+  ArgumentCaptor<Programme> programmeSonorisationArgumentCaptor;
 
   UUID id = UUID.randomUUID();
 
@@ -45,22 +45,22 @@ class ProgrammeSonorisationServiceTest {
       + "save new one ")
   void whenSaveNewProgrammeSonorisationThenReturn() {
     //given
-    ProgrammeSonorisation programmeSonorisation = buildProgrammeSonorisation();
+    Programme programme = buildProgrammeSonorisation();
 
-    when(programmeSonorisationRepository.save(programmeSonorisation)).thenReturn(
-        programmeSonorisation);
+    when(programmeRepository.save(programme)).thenReturn(
+        programme);
 
-    programmeSonorisationService.save(programmeSonorisation);
+    programmeSonorisationService.save(programme);
 
-    verify(programmeSonorisationRepository).save(programmeSonorisationArgumentCaptor.capture());
+    verify(programmeRepository).save(programmeSonorisationArgumentCaptor.capture());
 
-    ProgrammeSonorisation saved = programmeSonorisationArgumentCaptor.getValue();
+    Programme saved = programmeSonorisationArgumentCaptor.getValue();
 
-    assertEquals(saved.getNomProgramme(), programmeSonorisation.getNomProgramme());
+    assertEquals(saved.getNomProgramme(), programme.getNomProgramme());
 
-    assertEquals(saved.getDateCommencement(), programmeSonorisation.getDateCommencement());
+    assertEquals(saved.getDateCommencement(), programme.getDateCommencement());
 
-    assertEquals(saved.getDateFin(), programmeSonorisation.getDateFin());
+    assertEquals(saved.getDateFin(), programme.getDateFin());
 
   }
 
@@ -68,13 +68,13 @@ class ProgrammeSonorisationServiceTest {
   @DisplayName("When save existing progamme, search then update existing")
   void whenSaveProgrammeSearchForExistingOneThenUpdate(){
     //given
-    ProgrammeSonorisation programme = buildProgrammeSonorisation();
+    Programme programme = buildProgrammeSonorisation();
     programme.setProgrammeId(id);
     programme.setAssignationMicrophones(buildAssignationMicrophone(programme));
     programme.setAssignationVisioConferences(buildSetVisioConference(programme));
     programme.setAssignationMicrophones(buildAssignationMicrophone(programme));
 
-    ProgrammeSonorisation toUpdate = ProgrammeSonorisation.builder()
+    Programme toUpdate = Programme.builder()
         .programmeId(id)
         .nomProgramme("Programme semaine 23")
         .dateCommencement(LocalDate.of(2023,4,20))
@@ -84,11 +84,11 @@ class ProgrammeSonorisationServiceTest {
     toUpdate.setAssignationConsoles(buildAssignationConsole(toUpdate));
     toUpdate.setAssignationVisioConferences(buildSetVisioConference(toUpdate));
 
-    when(programmeSonorisationRepository.findById(id)).thenReturn(Optional.of(programme));
+    when(programmeRepository.findById(id)).thenReturn(Optional.of(programme));
 
     programmeSonorisationService.save(toUpdate);
 
-    verify(programmeSonorisationRepository).save(programmeSonorisationArgumentCaptor.capture());
+    verify(programmeRepository).save(programmeSonorisationArgumentCaptor.capture());
 
     var updated = programmeSonorisationArgumentCaptor.getValue();
 
@@ -99,15 +99,15 @@ class ProgrammeSonorisationServiceTest {
 
   }
 
-  private ProgrammeSonorisation buildProgrammeSonorisation() {
-    return ProgrammeSonorisation.builder()
+  private Programme buildProgrammeSonorisation() {
+    return Programme.builder()
         .nomProgramme("Programme semaine 1")
         .dateCommencement(LocalDate.now())
         .dateFin(LocalDate.now())
         .build();
   }
 
-  private Set<AssignationVisioConference> buildSetVisioConference(ProgrammeSonorisation programme) {
+  private Set<AssignationVisioConference> buildSetVisioConference(Programme programme) {
     Set<AssignationVisioConference> assignationVisioConferences = new HashSet<>();
     assignationVisioConferences.add(AssignationVisioConference.builder()
         .programme(programme)
@@ -117,7 +117,7 @@ class ProgrammeSonorisationServiceTest {
     return assignationVisioConferences;
   }
 
-  private Set<AssignationConsole> buildAssignationConsole(ProgrammeSonorisation programme) {
+  private Set<AssignationConsole> buildAssignationConsole(Programme programme) {
     Set<AssignationConsole> assignationConsoles = new HashSet<>();
     assignationConsoles.add(AssignationConsole.builder()
         .programme(programme)
@@ -127,7 +127,7 @@ class ProgrammeSonorisationServiceTest {
     return assignationConsoles;
   }
 
-  private Set<AssignationMicrophone> buildAssignationMicrophone(ProgrammeSonorisation programme) {
+  private Set<AssignationMicrophone> buildAssignationMicrophone(Programme programme) {
     Set<AssignationMicrophone> assignationMicrophones = new HashSet<>();
     assignationMicrophones.add(AssignationMicrophone.builder()
         .programme(programme)
