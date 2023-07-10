@@ -9,5 +9,7 @@ public interface ProgrammeService {
 
   Programme getProgrammeById(UUID programmeId);
 
+  Programme getLastProgrammeByType(String typeProgramme);
+
   List<Programme> getAllProgrammes();
 }

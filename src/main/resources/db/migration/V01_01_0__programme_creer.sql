@@ -1,7 +1,8 @@
-create table programme_sonorisation
+create table programme
 (
     programme_id      uuid                   not null primary key,
     nom_programme     character varying(200) not null,
+    type_programme    character varying(50)  not null,
     date_commencement date                   not null,
     date_fin          date                   not null,
     date_creation     timestamp              not null,

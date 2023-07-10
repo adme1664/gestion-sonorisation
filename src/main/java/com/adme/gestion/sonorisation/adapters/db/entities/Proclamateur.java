@@ -10,17 +10,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.util.Objects;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -31,6 +30,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@EqualsAndHashCode(callSuper = false)
 @Setter
 @EntityListeners(AuditingEntityListener.class)
 public class Proclamateur extends BaseEntity {
@@ -80,6 +80,9 @@ public class Proclamateur extends BaseEntity {
   @Column(name = "servir_dans_console")
   boolean servirDansConsole;
 
+  @Column(name = "servir_dans_estrade")
+  boolean servirDansEstrade;
+
   @Column(name = "servir_dans_visio")
   boolean servirDansVisio;
 
@@ -89,30 +92,6 @@ public class Proclamateur extends BaseEntity {
   @Column(name = "ne_plus_servir")
   boolean nePeutPlusServir;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "proclamateur")
-  Set<AssignationConsole> assignationConsoles;
-
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "proclamateur")
-  Set<AssignationMicrophone> assignationMicrophones;
-
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "proclamateur")
-  Set<AssignationVisioConference> assignationVisioConferences;
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
-      return false;
-    }
-    Proclamateur that = (Proclamateur) o;
-    return getProclamateurId() != null && Objects.equals(getProclamateurId(),
-        that.getProclamateurId());
-  }
-
-  @Override
-  public int hashCode() {
-    return getClass().hashCode();
-  }
+  @OneToMany(mappedBy = "proclamateur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  List<Assignation> assignations;
 }

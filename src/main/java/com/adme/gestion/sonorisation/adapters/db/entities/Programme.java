@@ -9,10 +9,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +21,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-@Table(name = "programme_sonorisation", schema = "gestion_sonorisation")
+@Table(name = "programme", schema = "gestion_sonorisation")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,6 +29,7 @@ import org.hibernate.annotations.GenericGenerator;
 @SuperBuilder
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = false)
 public class Programme extends BaseEntity {
 
   @Id
@@ -39,19 +41,16 @@ public class Programme extends BaseEntity {
   @Column(name = "nom_programme", nullable = false)
   String nomProgramme;
 
+  @Column(name = "type_programme", nullable = false)
+  String typeProgramme;
+
   @Column(name = "date_commencement", nullable = false)
   LocalDate dateCommencement;
 
   @Column(name = "date_fin", nullable = false)
   LocalDate dateFin;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "programme")
-  Set<AssignationConsole> assignationConsoles;
-
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "programme")
-  Set<AssignationMicrophone> assignationMicrophones;
-
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "programme")
-  Set<AssignationVisioConference> assignationVisioConferences;
+  @OneToMany(mappedBy = "programme", cascade = CascadeType.ALL)
+  List<Assignation> assignations;
 
 }

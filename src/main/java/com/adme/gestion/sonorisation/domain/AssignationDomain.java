@@ -1,10 +1,8 @@
 package com.adme.gestion.sonorisation.domain;
 
-import com.adme.gestion.sonorisation.models.TypeProgramme;
+import com.adme.gestion.sonorisation.models.TypeAssignation;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,17 +20,17 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @EqualsAndHashCode
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProgrammeDomain {
+public class AssignationDomain {
 
-  UUID programmeId;
+  UUID assignationId;
 
-  LocalDate dateCommencement;
+  ProclamateurDomain proclamateur;
 
-  String nomProgramme;
+  ProgrammeDomain programme;
 
-  LocalDate dateFin;
+  TypeAssignation typeAssignation;
 
-  TypeProgramme typeProgramme;
+  LocalDate dateAssignation;
 
   LocalDateTime dateCreation;
 

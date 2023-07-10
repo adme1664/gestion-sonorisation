@@ -30,6 +30,11 @@ public class ProgrammeServiceImpl implements ProgrammeService{
   }
 
   @Override
+  public Programme getLastProgrammeByType(String typeProgramme) {
+    return this.programmeRepository.findLastProgrammeByType(typeProgramme).orElse(null);
+  }
+
+  @Override
   public List<Programme> getAllProgrammes() {
     return this.programmeRepository.findAll();
   }

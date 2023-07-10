@@ -24,3 +24,7 @@ spring:
     username: test
     password: test
     url: jdbc:postgresql://${RDS_HOSTNAME:localhost}:${RDS_PORT:5432}/${RDS_DB_NAME:test_db}
+
+#Duree du programme en mois. Par defaut c'est 2
+programme:
+  duree: 2
