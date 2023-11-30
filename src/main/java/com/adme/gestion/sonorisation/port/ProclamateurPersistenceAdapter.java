@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-public class ProclamateurPersistenceGateway  implements ProclamateurPersistencePort {
+public class ProclamateurPersistenceAdapter implements ProclamateurPersistencePort {
 
   ProclamateurRepository proclamateurRepository;
   ProclamateurMapper proclamateurMapper;
 
-  public ProclamateurPersistenceGateway(
+  public ProclamateurPersistenceAdapter(
       ProclamateurRepository proclamateurRepository,
       ProclamateurMapper proclamateurMapper) {
     this.proclamateurRepository = proclamateurRepository;

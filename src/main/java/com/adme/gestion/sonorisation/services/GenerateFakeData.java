@@ -1,47 +1,47 @@
 package com.adme.gestion.sonorisation.services;
 
-import com.adme.gestion.sonorisation.adapters.db.entities.Programme;
-import com.adme.gestion.sonorisation.adapters.db.mapper.ProgrammeMapper;
 import com.adme.gestion.sonorisation.domain.AssignationDomain;
 import com.adme.gestion.sonorisation.domain.ProclamateurDomain;
 import com.adme.gestion.sonorisation.domain.ProgrammeDomain;
 import com.adme.gestion.sonorisation.models.TypeAssignation;
 import com.adme.gestion.sonorisation.models.TypeProgramme;
-import com.adme.gestion.sonorisation.port.AssignationPersistencePort;
-import com.adme.gestion.sonorisation.port.ProgrammePersistencePort;
+import com.adme.gestion.sonorisation.port.ProclamateurPersistencePort;
 import com.github.javafaker.Faker;
 import jakarta.annotation.PostConstruct;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Random;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
+@Slf4j
 public class GenerateFakeData {
 
-  ProgrammePersistencePort programmePersistencePort;
-  AssignationPersistencePort assignationPersistencePort;
-  ProgrammeMapper programmeMapper;
+  ProclamateurPersistencePort proclamateurPersistencePort;
   Faker faker;
+  GenerateProgrammeService generateProgrammeService;
 
-  public GenerateFakeData(ProgrammePersistencePort programmePersistencePort,
-      AssignationPersistencePort assignationPersistencePort,
-      ProgrammeMapper programmeMapper) {
-    this.programmePersistencePort = programmePersistencePort;
-    this.assignationPersistencePort = assignationPersistencePort;
-    this.programmeMapper = programmeMapper;
+  public GenerateFakeData(
+      ProclamateurPersistencePort proclamateurPersistencePort,
+      GenerateProgrammeService generateProgrammeService) {
+
+    this.proclamateurPersistencePort = proclamateurPersistencePort;
+
+    this.generateProgrammeService = generateProgrammeService;
+
     this.faker = new Faker();
   }
 
-  //@PostConstruct
-  private ProclamateurDomain generateProclamateurs() {
+  private ProclamateurDomain buildProclamateur() {
 
     return ProclamateurDomain.builder()
         .nomFamille(faker.name().firstName())
@@ -55,27 +55,33 @@ public class GenerateFakeData {
         .telephone(faker.phoneNumber().cellPhone())
         .email(faker.internet().emailAddress())
         .ancien(false)
+        .servirDansConsole(new Random().nextBoolean())
+        .servirDansEstrade(new Random().nextBoolean())
+        .servirDansVisio(new Random().nextBoolean())
+        .servirDansConsole(new Random().nextBoolean())
+        .servirDansMicrophone(new Random().nextBoolean())
         .userCreate("system")
         .serviteurMinisteriel(false).build();
   }
 
+  //@PostConstruct
+  private void generateProclamateurs() {
+    for (int i = 0; i < 40; i++) {
+      ProclamateurDomain proclamateurDomain = buildProclamateur();
+      proclamateurPersistencePort.saveOrUpdate(proclamateurDomain);
+    }
+  }
+
   @PostConstruct
   private void generateProgramme() {
-    ProgrammeDomain programme = ProgrammeDomain.builder()
-        .programmeId(UUID.randomUUID())
-        .typeProgramme(TypeProgramme.SONORISATION)
-        .nomProgramme("Programme mois juin - juillet")
-        .dateCommencement(LocalDate.now().plusWeeks(2))
-        .dateFin(LocalDate.now().plusMonths(2))
-        .build();
 
-    var assignations = buildListAssignation(programme);
-    var saved = (ProgrammeDomain) programmePersistencePort.saveOrUpdate(programme);
-    assignations.forEach(
-        assignation -> {
-          assignation.setProgramme(saved);
-          assignationPersistencePort.saveOrUpdate(assignation);
-        });
+    LocalDate dateStart = LocalDate.of(2023, Month.DECEMBER, 1);
+
+    ProgrammeDomain programmeDomain = generateProgrammeService.saveProgramme(
+        "Programme Novembre Decembre", dateStart, TypeProgramme.SONORISATION);
+
+    log.info("Nbre assignations: {}", programmeDomain.getNomProgramme());
+
   }
 
   private List<AssignationDomain> buildListAssignation(ProgrammeDomain programmeDomain) {
@@ -87,7 +93,7 @@ public class GenerateFakeData {
           .programme(programmeDomain)
           .typeAssignation(TypeAssignation.MICROPHONE)
           .dateAssignation(dateAssignation)
-          .proclamateur(generateProclamateurs()).build();
+          .proclamateur(buildProclamateur()).build();
       assignations.add(assignationDomain);
 
     }

@@ -13,6 +13,7 @@ public interface ProgrammeMapper {
   @Mapping(source = "dateCommencement", target = "dateCommencement")
   @Mapping(source = "dateFin", target = "dateFin")
   @Mapping(source = "nomProgramme", target = "nomProgramme")
+  @BaseEntityMapper
   ProgrammeDomain entityToDomain(Programme programme);
 
   @Mapping(source = "dateCommencement", target = "dateCommencement")

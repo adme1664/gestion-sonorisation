@@ -2,26 +2,8 @@ package com.adme.gestion.sonorisation.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import com.adme.gestion.sonorisation.adapters.db.entities.Programme;
-import com.adme.gestion.sonorisation.services.GenererProgrammeService;
-import com.adme.gestion.sonorisation.adapters.db.entities.Assignation;
-import com.adme.gestion.sonorisation.adapters.db.entities.Proclamateur;
-import com.adme.gestion.sonorisation.adapters.db.repository.ProgrammeRepository;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)

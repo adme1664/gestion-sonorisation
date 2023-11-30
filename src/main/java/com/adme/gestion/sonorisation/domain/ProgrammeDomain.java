@@ -2,27 +2,24 @@ package com.adme.gestion.sonorisation.domain;
 
 import com.adme.gestion.sonorisation.models.TypeProgramme;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProgrammeDomain {
+public class ProgrammeDomain extends BaseEntityDomain {
 
   UUID programmeId;
 
@@ -33,13 +30,5 @@ public class ProgrammeDomain {
   LocalDate dateFin;
 
   TypeProgramme typeProgramme;
-
-  LocalDateTime dateCreation;
-
-  String userCreate;
-
-  LocalDateTime dateModification;
-
-  String userModification;
 
 }

@@ -31,7 +31,7 @@ public class BaseEntity {
 
   @Column(name = "date_creation")
   @CreatedDate
-  LocalDateTime dateCreation;
+  LocalDateTime dateCreate;
 
   @Column(name = "user_create")
   @CreatedBy
@@ -39,9 +39,9 @@ public class BaseEntity {
 
   @Column(name = "date_modification")
   @LastModifiedDate
-  LocalDateTime dateModification;
+  LocalDateTime dateUpdate;
 
   @Column(name = "user_modification")
   @LastModifiedBy
-  String userModification;
+  String userUpdate;
 }

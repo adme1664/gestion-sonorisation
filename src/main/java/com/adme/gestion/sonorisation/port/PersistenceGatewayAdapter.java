@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PersistenceGatewayAdapter {
-  ProclamateurPersistenceGateway proclamateurPersistenceGateway;
+  ProclamateurPersistenceAdapter proclamateurPersistenceAdapter;
   ProgrammePersistenceGateway programmePersistenceGateway;
 
   public PersistenceGatewayAdapter(
-      ProclamateurPersistenceGateway proclamateurPersistenceGateway,
+      ProclamateurPersistenceAdapter proclamateurPersistenceAdapter,
       ProgrammePersistenceGateway programmePersistenceGateway) {
-    this.proclamateurPersistenceGateway = proclamateurPersistenceGateway;
+    this.proclamateurPersistenceAdapter = proclamateurPersistenceAdapter;
     this.programmePersistenceGateway = programmePersistenceGateway;
   }
 }
